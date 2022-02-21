@@ -23,12 +23,13 @@ firebase deploy --only hosting
 
 ## copy in private configs:
 ```
-chrisfulton@pop-heiress nftpuzzlefun % cp ../nftpuzzlefun_with_keys_PRIVATE/android/app/google-services.json android/app 
-chrisfulton@pop-heiress nftpuzzlefun % cp ../nftpuzzlefun_with_keys_PRIVATE/ios/Runner/GoogleService-Info.plist ios/Runner/
-chrisfulton@pop-heiress nftpuzzlefun % cp ../nftpuzzlefun_with_keys_PRIVATE/macos/Runner/GoogleService-Info.plist macos/Runner/
-chrisfulton@pop-heiress nftpuzzlefun % cp ../nftpuzzlefun_with_keys_PRIVATE/lib/firebase_options.dart lib 
-chrisfulton@pop-heiress nftpuzzlefun % cp -R ../nftpuzzlefun_with_keys_PRIVATE/.firebase .firebase
-chrisfulton@pop-heiress nftpuzzlefun % cp -R ../nftpuzzlefun_with_keys_PRIVATE/nftpuzzlefun.jks . 
+ cp ../nftpuzzlefun_with_keys_PRIVATE/android/app/google-services.json android/app 
+ cp ../nftpuzzlefun_with_keys_PRIVATE/ios/Runner/GoogleService-Info.plist ios/Runner/
+ cp ../nftpuzzlefun_with_keys_PRIVATE/macos/Runner/GoogleService-Info.plist macos/Runner/
+ cp ../nftpuzzlefun_with_keys_PRIVATE/lib/firebase_options.dart lib 
+ cp -R ../nftpuzzlefun_with_keys_PRIVATE/.firebase .firebase
+ cp ../nftpuzzlefun_with_keys_PRIVATE/nftpuzzlefun.jks . 
+ cp ../nftpuzzlefun_with_keys_PRIVATE/android/key.properties.tpl android/
 ```
 
 ## DESIGN
