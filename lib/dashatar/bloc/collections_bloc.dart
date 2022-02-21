@@ -33,6 +33,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     // copypasteearth, para-bellum-by-matty-mariansky
     const collectionList = [
       'doodles-official',
+      'fidenza-by-tyler-hobbs',
       'dartart',
       'themushroompeople',
       // 'copypasteearth',
