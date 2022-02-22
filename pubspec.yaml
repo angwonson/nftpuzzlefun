@@ -13,6 +13,7 @@ dependencies:
   fake_async: ^1.2.0
   firebase_analytics: ^9.0.5
   firebase_core: ^1.11.0
+  firebase_crashlytics: ^2.5.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1

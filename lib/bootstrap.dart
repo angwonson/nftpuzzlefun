@@ -11,6 +11,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:nftpuzzlefun/firebase_options.dart';
@@ -48,6 +49,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Test crash
+  // FirebaseCrashlytics.instance.crash();
 
   // # in build:
   await _analytics.logAppOpen();
