@@ -10,11 +10,11 @@
     },
     "buyNowTooltip": "Click here to see this NFT's web page",
     "@buyNowTooltip": {
-        "description": "Shown as a tooltip for the buy now button"
+        "description": "Shown as a tooltip for the artwork link button"
     },
-    "buyNow": "Buy Now",
+    "buyNow": "View on opensea.io",
     "@buyNow": {
-        "description": "Shown as the buy now button for selected artwork"
+        "description": "Shown as the link button for selected artwork"
     },
     "puzzleChallengeTitle": "Puzzle Challenge",
     "@puzzleChallengeTitle": {

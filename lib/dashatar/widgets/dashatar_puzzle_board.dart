@@ -46,6 +46,8 @@ class _DashatarPuzzleBoardState extends State<DashatarPuzzleBoard> {
   Widget build(BuildContext context) {
     return BlocListener<PuzzleBloc, PuzzleState>(
       listener: (context, state) async {
+        // NOTE: use this to test success page
+        // if (state.puzzleStatus == PuzzleStatus.complete || true == true) {
         if (state.puzzleStatus == PuzzleStatus.complete) {
           _completePuzzleTimer =
               Timer(const Duration(milliseconds: 370), () async {

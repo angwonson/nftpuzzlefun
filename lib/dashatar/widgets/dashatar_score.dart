@@ -74,14 +74,14 @@ class DashatarScore extends StatelessWidget {
             color: theme.backgroundColor,
             child: Stack(
               children: [
-                Positioned(
-                  left: imageOffset.dx,
-                  top: imageOffset.dy,
-                  child: Image.asset(
-                    theme.successThemeAsset,
-                    height: imageHeight,
-                  ),
-                ),
+                // Positioned(
+                //   left: imageOffset.dx,
+                //   top: imageOffset.dy,
+                //   child: Image.asset(
+                //     theme.successThemeAsset,
+                //     height: imageHeight,
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Column(
