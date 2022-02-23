@@ -38,9 +38,6 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
   ) async {
     emit(state.copyWith(status: () => ArtworkStatus.loading));
 
-    // a few to try: doodles-official, dartart, themushroompeople,
-    // copypasteearth, para-bellum-by-matty-mariansky
-    // const collection = 'doodles-official';
     final collection = event.collectionSlug;
     debugPrint('SUBSCRIPTION REQUESTED $collection');
 

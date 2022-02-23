@@ -3,13 +3,11 @@ part of 'collections_bloc.dart';
 
 enum CollectionsStatus { initial, loading, success, failure }
 
-// a few to try: doodles-official, dartart, themushroompeople, copypasteearth,
-// para-bellum-by-matty-mariansky
 class CollectionsState extends Equatable {
   const CollectionsState({
     this.status = CollectionsStatus.initial,
     this.collections = const [],
-    this.selectedCollection = 'doodles-official',
+    this.selectedCollection = 'plants-flowers-1',
   });
 
   final CollectionsStatus status;
