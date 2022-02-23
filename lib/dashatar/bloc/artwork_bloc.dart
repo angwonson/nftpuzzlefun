@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // import 'package:nftpuzzlefun/dashatar/artworks/my_custom_artwork_one.dart';
 import 'package:nftpuzzlefun/helpers/squaresplitter.dart';
 import 'package:opensea_repository/opensea_repository.dart';
+import 'package:tuple/tuple.dart';
 
 part 'artwork_event.dart';
 part 'artwork_state.dart';
@@ -48,15 +49,19 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
       
       /// Process images
       final artworkSplitImages = List<List<Image>>.empty(growable: true);
+      final artworkSplitImageSizes = List<List<Tuple2<int, int>>>.empty(growable: true);
+      final artworkOriginalImageSizes = List<Tuple2<int, int>>.empty(growable: true);
 
       for (final artwork in artworks) {
         // artworkSplitImages[aIndex]
-        final mySplitImages = await splitImage(
+        final mySplitImagesTuple = await splitImage(
             inputImage: artwork.imageUrl,
             horizontalPieceCount: 4,
             verticalPieceCount: 4,
         );
-        artworkSplitImages.add(mySplitImages);
+        artworkSplitImages.add(mySplitImagesTuple.item1);
+        artworkSplitImageSizes.add(mySplitImagesTuple.item2);
+        artworkOriginalImageSizes.add(mySplitImagesTuple.item3);
         debugPrint(artwork.imageUrl);
       }
 
@@ -65,6 +70,8 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
           status: () => ArtworkStatus.success,
           artworks: () => artworks,
           artworkSplitImages: () => artworkSplitImages,
+          artworkSplitImageSizes: () => artworkSplitImageSizes,
+          artworkOriginalImageSizes: () => artworkOriginalImageSizes,
           selectedArtwork: () => artworks[0],
         ),
       );

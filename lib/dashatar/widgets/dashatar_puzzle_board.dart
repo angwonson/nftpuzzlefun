@@ -44,6 +44,34 @@ class _DashatarPuzzleBoardState extends State<DashatarPuzzleBoard> {
 
   @override
   Widget build(BuildContext context) {
+    final artwork = context.select((ArtworkBloc bloc) => bloc.state.artwork);
+    final artworkOriginalImageSizes =
+    context.select((ArtworkBloc bloc) => bloc.state.artworkOriginalImageSizes);
+
+    final artworkOriginalImageDimensions = artworkOriginalImageSizes[artwork];
+    final artworkOriginalImageWidth = artworkOriginalImageDimensions.item1;
+    final artworkOriginalImageHeight = artworkOriginalImageDimensions.item2;
+
+    var newHeightSmall = _BoardSize.small;
+    var newHeightMedium = _BoardSize.medium;
+    var newHeightLarge =  _BoardSize.large;
+    var newWidthSmall = _BoardSize.small;
+    var newWidthMedium = _BoardSize.medium;
+    var newWidthLarge = _BoardSize.large;
+    if (artworkOriginalImageWidth >= artworkOriginalImageHeight) {
+      // ow / oh * nw = nh
+      newHeightSmall = artworkOriginalImageHeight / artworkOriginalImageWidth * _BoardSize.small;
+      newHeightMedium = artworkOriginalImageHeight / artworkOriginalImageWidth * _BoardSize.medium;
+      newHeightLarge = artworkOriginalImageHeight / artworkOriginalImageWidth * _BoardSize.large;
+      // debugPrint('newHeightLarge $newHeightLarge');
+    } else {
+      newWidthSmall = artworkOriginalImageWidth / artworkOriginalImageHeight * _BoardSize.small;
+      newWidthMedium = artworkOriginalImageWidth / artworkOriginalImageHeight * _BoardSize.medium;
+      newWidthLarge = artworkOriginalImageWidth / artworkOriginalImageHeight * _BoardSize.large;
+      // debugPrint('newWidthLarge $newWidthLarge');
+    }
+
+
     return BlocListener<PuzzleBloc, PuzzleState>(
       listener: (context, state) async {
         // NOTE: use this to test success page
@@ -81,19 +109,22 @@ class _DashatarPuzzleBoardState extends State<DashatarPuzzleBoard> {
         }
       },
       child: ResponsiveLayoutBuilder(
-        small: (_, child) => SizedBox.square(
+        small: (_, child) => SizedBox(
           key: const Key('dashatar_puzzle_board_small'),
-          dimension: _BoardSize.small,
+          width: newWidthSmall,
+          height: newHeightSmall,
           child: child,
         ),
-        medium: (_, child) => SizedBox.square(
+        medium: (_, child) => SizedBox(
           key: const Key('dashatar_puzzle_board_medium'),
-          dimension: _BoardSize.medium,
+          width: newWidthMedium,
+          height: newHeightMedium,
           child: child,
         ),
-        large: (_, child) => SizedBox.square(
+        large: (_, child) => SizedBox(
           key: const Key('dashatar_puzzle_board_large'),
-          dimension: _BoardSize.large,
+          width: newWidthLarge,
+          height: newHeightLarge,
           child: child,
         ),
         child: (_) => Stack(children: widget.tiles),

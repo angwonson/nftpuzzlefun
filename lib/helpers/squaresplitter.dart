@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as imglib;
+import 'package:tuple/tuple.dart';
 
 /// split an image in a grid pattern
-Future<List<Image>> splitImage(
+// Future<List<Image>> splitImage(
+Future<Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>> splitImage(
     {required String inputImage,
     required int horizontalPieceCount,
     required int verticalPieceCount}
@@ -14,7 +16,9 @@ Future<List<Image>> splitImage(
   final rawImg = (await http.get(Uri.parse(inputImage))).bodyBytes;
   final baseSizeImage = imglib.decodeImage(rawImg);
 
-  final xLength = (baseSizeImage!.width / horizontalPieceCount).floor();
+  final originalWidth = baseSizeImage!.width;
+  final originalHeight = baseSizeImage.height;
+  final xLength = (baseSizeImage.width / horizontalPieceCount).floor();
   final yLength = (baseSizeImage.height / verticalPieceCount).floor();
   final xRemainder = baseSizeImage.width.remainder(horizontalPieceCount);
   final yRemainder = baseSizeImage.height.remainder(verticalPieceCount);
@@ -24,6 +28,7 @@ Future<List<Image>> splitImage(
 
   var startX = 0;
   var startY = 0;
+  final outputImageSizeList = <Tuple2<int, int>>[];
   for (var y = 0; y < verticalPieceCount; y++) {
     /// Add an extra pixel if there is a remainder from the division above
     var tweakedYLength = yLength;
@@ -37,6 +42,7 @@ Future<List<Image>> splitImage(
       }
       debugPrint(
           'YCOUNT: $y XCOUNT: $x START X: $startX START Y: $startY END X: $tweakedXLength END Y: $tweakedYLength');
+      outputImageSizeList.add(Tuple2<int, int>(tweakedXLength, tweakedYLength));
       pieceList.add(
         imglib.copyCrop(
             baseSizeImage, startX, startY, tweakedXLength, tweakedYLength),
@@ -55,5 +61,6 @@ Future<List<Image>> splitImage(
     // .add(Image.memory(Uint8List.fromList(imglib.encodeJpg(img))));
   }
 
-  return outputImageList;
+  final myTuple = Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>(outputImageList, outputImageSizeList, Tuple2<int, int>(originalWidth as int, originalHeight));
+  return myTuple;
 }
