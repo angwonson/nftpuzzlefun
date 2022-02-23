@@ -528,9 +528,9 @@ packages:
   opensea_dart:
     dependency: transitive
     description:
-      name: opensea_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../opensea_dart"
+      relative: true
+    source: path
     version: "0.0.2"
   opensea_repository:
     dependency: "direct main"

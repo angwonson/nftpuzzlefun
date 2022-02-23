@@ -32,22 +32,24 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     // a few to try: doodles-official, dartart, themushroompeople,
     // copypasteearth, para-bellum-by-matty-mariansky
     const collectionList = [
-      'doodles-official',
-      'fidenza-by-tyler-hobbs',
-      'dartart',
-      'themushroompeople',
+      // 'doodles-official',
+      'plants-flowers-1',
+      'textures-patterns-1',
+      // 'fidenza-by-tyler-hobbs',
+      // 'dartart',
+      // 'themushroompeople',
       // 'copypasteearth',
-      'empresses',
-      'persona-lamps',
-      'para-bellum-by-matty-mariansky',
-      'genesis-by-dca',
+      // 'empresses',
+      // 'persona-lamps',
+      // 'para-bellum-by-matty-mariansky',
+      // 'genesis-by-dca',
     ];
 
     try {
       final collections = await _artworkRepository
           .getCollectionsByCollectionList(collectionList);
-      debugPrint('COLLECTION RECEIVED');
-      const selectedCollection = 'doodles-official';
+      debugPrint('COLLECTION RECEIVED $collections');
+      const selectedCollection = 'plants-flowers-1';
 
       emit(
         state.copyWith(

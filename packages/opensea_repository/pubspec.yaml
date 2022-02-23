@@ -12,7 +12,11 @@ dependencies:
   json_annotation: ^4.0.0
 #  opensea_api:
 #    path: ../opensea_api
-  opensea_dart: ^0.0.2
+#  opensea_dart: ^0.0.2
+  # TODO: change this back to production if the owner accepts our pull request for NPF-73
+  opensea_dart:
+    path: ../../../opensea_dart
+
 
 dev_dependencies:
   coverage: ^1.0.3
