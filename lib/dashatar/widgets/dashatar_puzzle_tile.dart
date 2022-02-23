@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:ui' as dartui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:image_size_getter/image_size_getter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:nftpuzzlefun/audio_control/audio_control.dart';
 import 'package:nftpuzzlefun/dashatar/dashatar.dart';
@@ -11,6 +13,7 @@ import 'package:nftpuzzlefun/layout/layout.dart';
 import 'package:nftpuzzlefun/models/models.dart';
 import 'package:nftpuzzlefun/puzzle/puzzle.dart';
 import 'package:nftpuzzlefun/theme/themes/themes.dart';
+import 'package:tuple/tuple.dart';
 
 abstract class _TileSize {
   static double small = 75;
@@ -93,7 +96,9 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
     final artworks = context.select((ArtworkBloc bloc) => bloc.state.artworks);
     final artwork = context.select((ArtworkBloc bloc) => bloc.state.artwork);
     final artworkSplitImages =
-        context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImages);
+    context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImages);
+    final artworkSplitImageSizes =
+    context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImageSizes);
     final status =
         context.select((DashatarPuzzleBloc bloc) => bloc.state.status);
     final hasStarted = status == DashatarPuzzleStatus.started;
@@ -107,6 +112,30 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
 
     final canPress = hasStarted && puzzleIncomplete;
 
+    // which is smaller, limiting height to _TileSize.large or limiting width?
+    final artworkSplitImageDimensions = artworkSplitImageSizes[artwork][(widget.tile.value - 1)];
+    final artworkSplitImageWidth = artworkSplitImageDimensions.item1;
+    final artworkSplitImageHeight = artworkSplitImageDimensions.item2;
+
+    var newHeightSmall = _TileSize.small;
+    var newHeightMedium = _TileSize.medium;
+    var newHeightLarge =  _TileSize.large;
+    var newWidthSmall = _TileSize.small;
+    var newWidthMedium = _TileSize.medium;
+    var newWidthLarge = _TileSize.large;
+    if (artworkSplitImageWidth >= artworkSplitImageHeight) {
+      // ow / oh * nw = nh
+      newHeightSmall = artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.small;
+      newHeightMedium = artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.medium;
+      newHeightLarge = artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.large;
+      // debugPrint('newHeightLarge $newHeightLarge');
+    } else {
+      newWidthSmall = artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.small;
+      newWidthMedium = artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.medium;
+      newWidthLarge = artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.large;
+      // debugPrint('newWidthLarge $newWidthLarge');
+    }
+
     return AudioControlListener(
       audioPlayer: _audioPlayer,
       child: AnimatedAlign(
@@ -117,19 +146,22 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
         duration: movementDuration,
         curve: Curves.easeInOut,
         child: ResponsiveLayoutBuilder(
-          small: (_, child) => SizedBox.square(
+          small: (_, child) => SizedBox(
             key: Key('dashatar_puzzle_tile_small_${widget.tile.value}'),
-            dimension: _TileSize.small,
+            width: newWidthSmall,
+            height: newHeightSmall,
             child: child,
           ),
-          medium: (_, child) => SizedBox.square(
+          medium: (_, child) => SizedBox(
             key: Key('dashatar_puzzle_tile_medium_${widget.tile.value}'),
-            dimension: _TileSize.medium,
+            width: newWidthMedium,
+            height: newHeightMedium,
             child: child,
           ),
-          large: (_, child) => SizedBox.square(
+          large: (_, child) => SizedBox(
             key: Key('dashatar_puzzle_tile_large_${widget.tile.value}'),
-            dimension: _TileSize.large,
+            width: newWidthLarge,
+            height: newHeightLarge,
             child: child,
           ),
           child: (_) => MouseRegion(
@@ -158,7 +190,6 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
                       : null,
                   icon: artworkSplitImages[artwork][(widget.tile.value - 1)]
                   // Image.asset(
-                  //   // TODO: replace this w dynamic tile widgets - squaresplitter
                   //   theme.dashAssetForTile(widget.tile),
                   //   semanticLabel: context.l10n.puzzleTileLabelText(
                   //     widget.tile.value.toString(),
