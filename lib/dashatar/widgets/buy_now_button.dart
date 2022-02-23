@@ -60,7 +60,10 @@ class _BuyNowButtonState extends State<BuyNowButton> {
                   openLink(affLink);
                 },
           textColor: isLoading ? theme.defaultColor : null,
-          child: Text(text),
+          child: Text(
+              text,
+            style: const TextStyle(fontSize: 11),
+          ),
         ),
       ),
     );
