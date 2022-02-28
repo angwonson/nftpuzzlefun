@@ -16,5 +16,11 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
