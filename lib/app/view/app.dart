@@ -178,6 +178,8 @@ class _AppState extends State<App> {
           accentColor: const Color(0xFF13B9FF),
         ),
       ),
+      // TODO: set up analytics observer here
+      // navigatorObservers: [],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
