@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:opensea_repository/opensea_repository.dart';
 
@@ -31,25 +32,32 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
 
     // a few to try: doodles-official, dartart, themushroompeople,
     // copypasteearth, para-bellum-by-matty-mariansky
-    const collectionList = [
-      // 'doodles-official',
-      'plants-flowers-1',
-      'textures-patterns-1',
-      // 'fidenza-by-tyler-hobbs',
-      // 'dartart',
-      // 'themushroompeople',
-      // 'copypasteearth',
-      // 'empresses',
-      // 'persona-lamps',
-      // 'para-bellum-by-matty-mariansky',
-      // 'genesis-by-dca',
-    ];
+    final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
+    final collectionsSlugList =
+        firebaseRemoteConfig.getString('collections').split(',');
+    final collectionList = <String>[];
+    for (var i = 0; i < collectionsSlugList.length; i++) {
+      collectionList.add(collectionsSlugList[i]);
+    };
+    // const collectionList = [
+    //   // 'doodles-official',
+    //   'plants-flowers-1',
+    //   'textures-patterns-1',
+    //   // 'fidenza-by-tyler-hobbs',
+    //   // 'dartart',
+    //   // 'themushroompeople',
+    //   // 'copypasteearth',
+    //   // 'empresses',
+    //   // 'persona-lamps',
+    //   // 'para-bellum-by-matty-mariansky',
+    //   // 'genesis-by-dca',
+    // ];
 
     try {
       final collections = await _artworkRepository
           .getCollectionsByCollectionList(collectionList);
       debugPrint('COLLECTION RECEIVED $collections');
-      const selectedCollection = 'plants-flowers-1';
+      final selectedCollection = collectionList[0];
 
       emit(
         state.copyWith(
