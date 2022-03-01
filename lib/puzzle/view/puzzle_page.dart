@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -30,6 +31,15 @@ class PuzzlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
+    final collectionsSlugList =
+    firebaseRemoteConfig.getString('collections').split(',');
+    final collectionList = <String>[];
+    for (var i = 0; i < collectionsSlugList.length; i++) {
+      collectionList.add(collectionsSlugList[i]);
+    };
+    final selectedCollectionSlug = collectionList[0];
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -73,8 +83,7 @@ class PuzzlePage extends StatelessWidget {
             // selectedCollection:
             //     context.read<CollectionsBloc>().state.selectedCollection,
           )..add(ArtworkSubscriptionRequested(
-              collectionSlug:
-                  context.read<CollectionsBloc>().state.selectedCollection)),
+              collectionSlug: selectedCollectionSlug,),),
         ),
       ],
       child: const PuzzleView(),
