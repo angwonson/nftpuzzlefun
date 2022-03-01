@@ -12,6 +12,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:nftpuzzlefun/firebase_options.dart';
@@ -48,6 +49,21 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // This uses firebase_options.dart
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
+  await firebaseRemoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 10),
+    minimumFetchInterval: const Duration(days: 1),
+  ));
+  await firebaseRemoteConfig.setDefaults(<String, dynamic>{
+    'collections': 'plants-flowers-1, textures-patterns-1',
+  });
+  final updated = await firebaseRemoteConfig.fetchAndActivate();
+  RemoteConfigValue(null, ValueSource.valueStatic);
+  debugPrint('TEST isUpdated $updated');
+  debugPrint(
+    'TEST  remote collections ${firebaseRemoteConfig.getString('collections')}',
   );
 
   // Test crash
