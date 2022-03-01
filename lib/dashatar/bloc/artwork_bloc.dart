@@ -35,7 +35,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
   Future<void> _onSubscriptionRequested(
     ArtworkSubscriptionRequested event,
     Emitter<ArtworkState> emit,
-      // String selectedCollection,
+    // String selectedCollection,
   ) async {
     emit(state.copyWith(status: () => ArtworkStatus.loading));
 
@@ -46,23 +46,35 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
       final artworks =
           await _artworkRepository.getArtworksByCollection(collection);
       debugPrint('COLLECTION RECEIVED');
-      
-      /// Process images
-      final artworkSplitImages = List<List<Image>>.empty(growable: true);
-      final artworkSplitImageSizes = List<List<Tuple2<int, int>>>.empty(growable: true);
-      final artworkOriginalImageSizes = List<Tuple2<int, int>>.empty(growable: true);
 
-      for (final artwork in artworks) {
-        // artworkSplitImages[aIndex]
-        final mySplitImagesTuple = await splitImage(
+      /// Process images
+      // First get images and image sizes from firebase/cloud storage
+      // if image data doesn't exist in firebase, use the squaresplitter
+      // also emit new state -> processing images and set up progressindicator
+      final artworkSplitImages = List<List<Image>>.empty(growable: true);
+      final artworkSplitImageSizes =
+          List<List<Tuple2<int, int>>>.empty(growable: true);
+      final artworkOriginalImageSizes =
+          List<Tuple2<int, int>>.empty(growable: true);
+
+      const testMe = true;
+      if (testMe) {
+        // run squaresplitter and shove data into firebase
+        for (final artwork in artworks) {
+          // artworkSplitImages[aIndex]
+          final mySplitImagesTuple = await splitImage(
             inputImage: artwork.imageUrl,
             horizontalPieceCount: 4,
             verticalPieceCount: 4,
-        );
-        artworkSplitImages.add(mySplitImagesTuple.item1);
-        artworkSplitImageSizes.add(mySplitImagesTuple.item2);
-        artworkOriginalImageSizes.add(mySplitImagesTuple.item3);
-        debugPrint(artwork.imageUrl);
+          );
+          artworkSplitImages.add(mySplitImagesTuple.item1);
+          artworkSplitImageSizes.add(mySplitImagesTuple.item2);
+          artworkOriginalImageSizes.add(mySplitImagesTuple.item3);
+          debugPrint(artwork.imageUrl);
+
+          // TODO: insert into firestore, upload to cloud storage
+
+        }
       }
 
       emit(
