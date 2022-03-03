@@ -23,14 +23,18 @@ firebase deploy --only hosting
 
 ## copy in private configs:
 ```
- cp ../nftpuzzlefun_with_keys_PRIVATE/android/app/google-services.json android/app 
+ cp ../nftpuzzlefun_with_keys_PRIVATE/android/app/google-services.json android/app/
  cp ../nftpuzzlefun_with_keys_PRIVATE/ios/Runner/GoogleService-Info.plist ios/Runner/
  cp ../nftpuzzlefun_with_keys_PRIVATE/macos/Runner/GoogleService-Info.plist macos/Runner/
- cp ../nftpuzzlefun_with_keys_PRIVATE/lib/firebase_options.dart lib 
+ cp ../nftpuzzlefun_with_keys_PRIVATE/lib/firebase_options.dart lib/
  cp -R ../nftpuzzlefun_with_keys_PRIVATE/.firebase .firebase
- cp ../nftpuzzlefun_with_keys_PRIVATE/nftpuzzlefun.jks . 
+ cp ../nftpuzzlefun_with_keys_PRIVATE/nftpuzzlefun.jks .
  cp ../nftpuzzlefun_with_keys_PRIVATE/android/key.properties.tpl android/
+ cp -i ../nftpuzzlefun_with_keys_PRIVATE/packages/opensea_repository/lib/src/api_key.dart packages/opensea_repository/lib/src/
 ```
+
+# Install packages recursively (shorthand)
+```very_good packages get -r```
 
 ## DESIGN
 - only pull nft from api once. the id and the image will never change so we can just cache it in firebase
