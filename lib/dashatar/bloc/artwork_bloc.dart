@@ -66,6 +66,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
       if (!existsInStorage) {
         // run squaresplitter and shove data into firebase
         for (final artwork in artworks) {
+          // TODO: this call is working and we can start replacing the old code (mySplitImagesTuple) with this (puzzlePiecesTuples) result
           final puzzlePiecesTuples = await _artworkPuzzlePiecesRepository.getPuzzlePieces(
             openseaAssetId: artwork.id,
             inputImage: artwork.imageUrl,
