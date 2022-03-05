@@ -1,6 +1,7 @@
 // import 'dart:ui';
 import 'dart:async';
 
+import 'package:artwork_puzzle_pieces_repository/artwork_puzzle_pieces_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:flutter/foundation.dart';
@@ -18,8 +19,10 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
   /// doc
   ArtworkBloc({
     required ArtworkRepository artworkRepository,
+    required ArtworkPuzzlePiecesRepository artworkPuzzlePiecesRepository,
     // required String selectedCollection,
   })  : _artworkRepository = artworkRepository,
+        _artworkPuzzlePiecesRepository = artworkPuzzlePiecesRepository,
         // _selectedCollection = selectedCollection,
         super(const ArtworkState()) {
     on<ArtworkSubscriptionRequested>(_onSubscriptionRequested);
@@ -30,6 +33,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
   }
 
   final ArtworkRepository _artworkRepository;
+  final ArtworkPuzzlePiecesRepository _artworkPuzzlePiecesRepository;
   // final String _selectedCollection;
 
   Future<void> _onSubscriptionRequested(
@@ -57,10 +61,18 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
       final artworkOriginalImageSizes =
           List<Tuple2<int, int>>.empty(growable: true);
 
-      const testMe = true;
-      if (testMe) {
+      // get split images from firebase storage. if not exists, then generate
+      const existsInStorage = false;
+      if (!existsInStorage) {
         // run squaresplitter and shove data into firebase
         for (final artwork in artworks) {
+          final puzzlePiecesTuples = await _artworkPuzzlePiecesRepository.getPuzzlePieces(
+            openseaAssetId: artwork.id,
+            inputImage: artwork.imageUrl,
+            horizontalPieceCount: 4,
+            verticalPieceCount: 4,
+          );
+
           // artworkSplitImages[aIndex]
           final mySplitImagesTuple = await splitImage(
             inputImage: artwork.imageUrl,
@@ -75,6 +87,8 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
           // TODO: insert into firestore, upload to cloud storage
 
         }
+      } else {
+        // populate from storage result
       }
 
       emit(

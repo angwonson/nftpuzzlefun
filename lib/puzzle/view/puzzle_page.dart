@@ -1,3 +1,4 @@
+import 'package:artwork_puzzle_pieces_repository/artwork_puzzle_pieces_repository.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,6 +81,7 @@ class PuzzlePage extends StatelessWidget {
         BlocProvider(
           create: (context) => ArtworkBloc(
             artworkRepository: ArtworkRepository(),
+            artworkPuzzlePiecesRepository: const ArtworkPuzzlePiecesRepository(),
             // selectedCollection:
             //     context.read<CollectionsBloc>().state.selectedCollection,
           )..add(ArtworkSubscriptionRequested(
