@@ -188,7 +188,7 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
                           unawaited(_audioPlayer?.replay());
                         }
                       : null,
-                  icon: artworkSplitImages[artwork][(widget.tile.value - 1)]
+                  icon: Image.network(artworkSplitImages[artwork][(widget.tile.value - 1)])
                   // Image.asset(
                   //   theme.dashAssetForTile(widget.tile),
                   //   semanticLabel: context.l10n.puzzleTileLabelText(

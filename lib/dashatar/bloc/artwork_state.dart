@@ -19,7 +19,7 @@ class ArtworkState extends Equatable {
 
   /// The list of all available [Artwork]s.
   final List<Artwork> artworks;
-  final List<List<Image>> artworkSplitImages;
+  final List<List<String>> artworkSplitImages;
   final List<List<Tuple2<int, int>>> artworkSplitImageSizes;
   final List<Tuple2<int, int>> artworkOriginalImageSizes;
 
@@ -40,7 +40,7 @@ class ArtworkState extends Equatable {
   ArtworkState copyWith({
     ArtworkStatus Function()? status,
     List<Artwork> Function()? artworks,
-    List<List<Image>> Function()? artworkSplitImages,
+    List<List<String>> Function()? artworkSplitImages,
     List<List<Tuple2<int, int>>> Function()? artworkSplitImageSizes,
     List<Tuple2<int, int>> Function()? artworkOriginalImageSizes,
     int Function()? artwork,
