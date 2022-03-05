@@ -55,6 +55,7 @@ class ArtworkPuzzlePiecesRepository {
     // if image hasn't been cached yet, cache it in storage, with meta data and return OGImage model object with width and height meta data
     if (!ogImageExists) {
       // step 1 run splitimage as all meta data including for the original uncut image comes from this utility
+      print('BUILDING SPLITIMAGES NEW STYLE');
       final mySplitImagesTuple = await splitPuzzleImage(
         inputImage: inputImage,
         horizontalPieceCount: horizontalPieceCount,
@@ -218,6 +219,7 @@ class ArtworkPuzzlePiecesRepository {
     // probably want to return the device local version of the main artwork as well:
     // use firebase_storage.writeToFile to copy image to local device and only return the path as String
     final myTuple = Tuple4<List<String>, List<Tuple2<int, int>>, Tuple2<int, int>, String>(artworkSplitImages, artworkSplitImageSizes, artworkOriginalImageSize, ogDownloadURL);
+    print('FINISHED BUILDING PUZZLE PIECES DATA FOR ONE IMAGE');
     return myTuple;
   }
 }
