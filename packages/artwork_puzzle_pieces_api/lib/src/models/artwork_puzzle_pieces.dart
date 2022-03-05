@@ -17,9 +17,11 @@ part 'artwork_puzzle_pieces.g.dart';
 /// If an [tokenId] is provided, it cannot be empty. If no [tokenId] is provided, one
 /// will be generated.
 ///
-/// [artworkPuzzlePieces]s are immutable and can be copied using [copyWith], in addition to
-/// being serialized and deserialized using [toJson] and [fromJson]
+/// [artworkPuzzlePieces]s are immutable and can be copied using [copyWith], in
+/// addition to being serialized and deserialized using [toJson] and [fromJson]
 /// respectively.
+/// Something odd about opensea assets: they require both token_id
+/// and asset_contract_Address together as PK
 /// {@endtemplate}
 @immutable
 @JsonSerializable()
@@ -28,7 +30,7 @@ class ArtworkPuzzlePieces extends Equatable {
   ArtworkPuzzlePieces({
     required this.tokenId,
     required this.assetContractAddress,
-    required this.artworkSplitImages,
+    required this.artworkSplitImageUrls,
     required this.artworkSplitImageSizes,
     required this.artworkOriginalImageSizes,
   });
@@ -46,7 +48,7 @@ class ArtworkPuzzlePieces extends Equatable {
   /// The description of the artworkPuzzlePieces.
   ///
   /// Defaults to an empty list.
-  final List<Image> artworkSplitImages;
+  final List<String> artworkSplitImageUrls;
 
   /// Whether the artworkPuzzlePieces is completed.
   ///
@@ -64,14 +66,15 @@ class ArtworkPuzzlePieces extends Equatable {
   ArtworkPuzzlePieces copyWith({
     required int tokenId,
     required String assetContractAddress,
-    required List<Image> artworkSplitImages,
+    required List<String> artworkSplitImageUrls,
     required List<Tuple2<int, int>> artworkSplitImageSizes,
     required Tuple2<int, int> artworkOriginalImageSizes,
   }) {
     return ArtworkPuzzlePieces(
       tokenId: tokenId ?? this.tokenId,
       assetContractAddress: assetContractAddress ?? this.assetContractAddress,
-      artworkSplitImages: artworkSplitImages ?? this.artworkSplitImages,
+      artworkSplitImageUrls:
+          artworkSplitImageUrls ?? this.artworkSplitImageUrls,
       artworkSplitImageSizes:
           artworkSplitImageSizes ?? this.artworkSplitImageSizes,
       artworkOriginalImageSizes:
@@ -90,7 +93,7 @@ class ArtworkPuzzlePieces extends Equatable {
   List<Object> get props => [
         tokenId,
         assetContractAddress,
-        artworkSplitImages,
+        artworkSplitImageUrls,
         artworkSplitImageSizes,
         artworkOriginalImageSizes
       ];

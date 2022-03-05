@@ -8,12 +8,15 @@ environment:
   flutter: 2.8.0
 
 dependencies:
+  artwork_puzzle_pieces_repository:
+    path: packages/artwork_puzzle_pieces_repository
   bloc: ^8.0.1
   equatable: ^2.0.3
   fake_async: ^1.2.0
-  firebase_analytics: ^9.0.5
-  firebase_core: ^1.11.0
-  firebase_crashlytics: ^2.5.1
+  firebase_analytics: ^9.1.2
+#  firebase_core: ^1.11.0
+  firebase_core: ^1.13.1
+  firebase_crashlytics: ^2.5.3
   firebase_remote_config: ^2.0.2
   flutter:
     sdk: flutter

@@ -63,7 +63,8 @@ class ArtworkRepository {
   }
 
   List<Artwork> myArtworkConverter(assetsapi.AssetsObject value) {
-    // TODO: move squaresplitter stuff here  rather then in the bloc? Might make it easier to cache the cut images either locally or in firebase
+    // TODO: move squaresplitter stuff here  rather then in the bloc? Might make
+    //  it easier to cache the cut images either locally or in firebase
     final artworksList = <Artwork>[];
     value.assets?.forEach((element) {
       // print('NEXT');

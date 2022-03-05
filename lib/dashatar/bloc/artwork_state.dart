@@ -28,7 +28,14 @@ class ArtworkState extends Equatable {
   final Artwork? selectedArtwork;
 
   @override
-  List<Object> get props => [status, artworks, artworkSplitImages, artworkSplitImageSizes, artworkOriginalImageSizes, artwork];
+  List<Object> get props => [
+        status,
+        artworks,
+        artworkSplitImages,
+        artworkSplitImageSizes,
+        artworkOriginalImageSizes,
+        artwork
+      ];
 
   ArtworkState copyWith({
     ArtworkStatus Function()? status,
@@ -52,7 +59,8 @@ class ArtworkState extends Equatable {
           ? artworkOriginalImageSizes()
           : this.artworkOriginalImageSizes,
       artwork: artwork != null ? artwork() : this.artwork,
-      selectedArtwork: selectedArtwork != null ? selectedArtwork() : this.selectedArtwork,
+      selectedArtwork:
+          selectedArtwork != null ? selectedArtwork() : this.selectedArtwork,
     );
   }
 }
