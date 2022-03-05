@@ -11,6 +11,7 @@ dependencies:
 #  firebase_storage: ^3.1.6
   firebase_core: ^1.13.1
   firebase_storage: ^10.2.9
+  path_provider: ^2.0.9
   squaresplitter:
     path: ../squaresplitter
   tuple: ^2.0.0

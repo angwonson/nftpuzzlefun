@@ -1,8 +1,10 @@
 import 'dart:convert' show utf8;
+import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path_provider/path_provider.dart';
 import 'package:squaresplitter/squaresplitter.dart';
 import 'package:tuple/tuple.dart';
 
@@ -18,7 +20,7 @@ class ArtworkPuzzlePiecesRepository {
   /// structure
   // Future<Tuple3<List<String>, List<Tuple2<int, int>>, Tuple2<int, int>>> getPuzzlePieces(
   // Might want to replace the above line with some actual models
-  Future<bool> getPuzzlePieces(
+  Future<Tuple4<List<String>, List<Tuple2<int, int>>, Tuple2<int, int>, String>> getPuzzlePieces(
       {
     required int openseaAssetId,
     required String inputImage,
@@ -68,11 +70,10 @@ class ArtworkPuzzlePiecesRepository {
         },
       );
 
-
       // put this ogImage into the firebase storage location
       await ogRef.putData(mySplitImagesTuple.item4, ogImageMetadata);
 
-      // step2 re-download it to local storage
+      // step2 re-download it to local storage and set the return variable/model object
 
       // step3 return OGImage object with local storage path, width and height all as strings
 
@@ -88,11 +89,11 @@ class ArtworkPuzzlePiecesRepository {
       // step 2 images aren't split/cached yet so run squaresplitter and upload ther results to firebase storage, then return as nowmal
       // artworkSplitImages[aIndex]
 
-      final artworkSplitImages = List<List<String>>.empty(growable: true);
-      final artworkSplitImageSizes =
-      List<List<Tuple2<int, int>>>.empty(growable: true);
-      final artworkOriginalImageSizes =
-      List<Tuple2<int, int>>.empty(growable: true);
+      // final artworkSplitImages = List<List<String>>.empty(growable: true);
+      // final artworkSplitImageSizes =
+      // List<List<Tuple2<int, int>>>.empty(growable: true);
+      // final artworkOriginalImageSizes =
+      // List<Tuple2<int, int>>.empty(growable: true);
 
       // loop through mySplitImagesTuple.item1 and upload them to firebase
       var counter = 0;
@@ -128,7 +129,8 @@ class ArtworkPuzzlePiecesRepository {
 
 
         // this works! just disabled temporarily to speed up testing
-        // await ref.putData(splitImage, metadata);
+        // TODO: turn this back on!
+        await puzzlepieceRef.putData(splitImage, metadata);
 
 
 
@@ -160,16 +162,62 @@ class ArtworkPuzzlePiecesRepository {
 
 
 
-    } else {
-      // image exists, so lets try and load it all from firebase storage
+    // } else {
+    }
+    // end if og image exists
+
+    // image exists, so lets try and load it all from firebase storage
+    // Step 1) get original image downloadurl and meta and copy to local storage
+    // NOTE: local storage is eluding me. let's move on and just use the url and Image.network()
+    final ogMetadata = await ogRef.getMetadata();
+    final ogDownloadURL = await ogRef.getDownloadURL();
+    print('URRRG DOWNLOAD URL $ogDownloadURL');
+    // final ogDownloadURL = await ogRef.getDownloadURL(); // do we need this since we are going to use local storage as another cache layer?
+    // here I present you with some null safety nonsense
+    final ogWidth = ogMetadata.customMetadata == null ? 0 : int.parse(ogMetadata.customMetadata!['width'].toString());
+    final ogHeight = ogMetadata.customMetadata == null ? 0 : int.parse(ogMetadata.customMetadata!['height'].toString());
+    final artworkOriginalImageSize = Tuple2<int, int>(ogWidth, ogHeight);
+    print('OG IMAGE HEIGHT POST $ogHeight');
+
+    // final appDocDir = await getApplicationDocumentsDirectory();
+    // final downloadToFile = File('${appDocDir.path}/puzzle_pieces/$openseaAssetId/original.png');
+    // print('downloadToFile ${appDocDir.path}');
+    // await firebase_storage.FirebaseStorage.instance
+    //     .ref('puzzle_pieces/$openseaAssetId/original.png')
+    //     .writeToFile(downloadToFile);
+    // print("OK/NOTOK");
+    // // TODO: test artworkOriginalImageLocalPath to make sure it is working
+    // final artworkOriginalImageLocalPath = '${appDocDir.path}puzzle_pieces/$openseaAssetId/original.png';
+
+
+
+    // Step 2) get puzzle pieces downloadurl, meta, and copy to local storage
+
+    final artworkSplitImages = List<String>.empty(growable: true);
+    final artworkSplitImageSizes = List<Tuple2<int, int>>.empty(growable: true);
+
+    for (var i = 0; i <= 15; i++) {
+      final puzzlepieceRef = storage.ref('puzzle_pieces/$openseaAssetId/$i.png');
+
+      final pieceDownloadURL = await puzzlepieceRef.getDownloadURL();
+      final pieceMetadata = await ogRef.getMetadata();
+
+
+      final pieceWidth = pieceMetadata.customMetadata == null ? 0 : int.parse(pieceMetadata.customMetadata!['width'].toString());
+      final pieceHeight = pieceMetadata.customMetadata == null ? 0 : int.parse(pieceMetadata.customMetadata!['height'].toString());
+      final artworkPuzzlePieceImageSize = Tuple2<int, int>(pieceWidth, pieceHeight);
+
+      artworkSplitImageSizes.add(artworkPuzzlePieceImageSize);
+      artworkSplitImages.add(pieceDownloadURL);
+
+
+
     }
 
-
-
-    return false;
+    // return false;
     // probably want to return the device local version of the main artwork as well:
     // use firebase_storage.writeToFile to copy image to local device and only return the path as String
-    // final myTuple = Tuple3<List<String>, List<Tuple2<int, int>>, Tuple2<int, int>>(outputImageList, outputImageSizeList, Tuple2<int, int>(originalWidth as int, originalHeight));
-    // return myTuple;
+    final myTuple = Tuple4<List<String>, List<Tuple2<int, int>>, Tuple2<int, int>, String>(artworkSplitImages, artworkSplitImageSizes, artworkOriginalImageSize, ogDownloadURL);
+    return myTuple;
   }
 }
