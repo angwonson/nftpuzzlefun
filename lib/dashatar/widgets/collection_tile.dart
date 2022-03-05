@@ -28,6 +28,7 @@ class CollectionTile extends StatelessWidget {
     final collectionsState = context.watch<CollectionsBloc>().state;
     final artworkState = context.watch<ArtworkBloc>().state;
     final currentCollection = collectionsState.selectedCollection;
+    print('CURRENT COLLECTION $currentCollection');
     final isActiveCollection = slug == currentCollection;
     // debugPrint('current' + currentCollection);
 
