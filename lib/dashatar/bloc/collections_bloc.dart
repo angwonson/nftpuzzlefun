@@ -40,6 +40,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     final collectionList = <String>[];
     for (var i = 0; i < collectionsSlugList.length; i++) {
       collectionList.add(collectionsSlugList[i]);
+      debugPrint('FBREMOTECONFIG ${collectionsSlugList[i]}');
     }
     // final firstCollection = collectionList[0];
 
