@@ -54,7 +54,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
   await firebaseRemoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(seconds: 10),
-    minimumFetchInterval: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(hours: 1),
   ));
   await firebaseRemoteConfig.setDefaults(<String, dynamic>{
     'collections': 'plants-flowers-1, textures-patterns-1',
