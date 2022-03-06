@@ -75,3 +75,12 @@ flutter run -d headless-server --web-hostname localhost --web-port 58149
 ```
 https://stackoverflow.com/questions/58248277/how-to-specify-a-port-number-while-running-flutter-web
 
+## gsutil is required to set up CORS config for firebase storage:
+https://cloud.google.com/storage/docs/gsutil_install
+```gsutil cors set firebase_storage_cors_config/cors.json gs://nftpuzzlefun.appspot.com```
+
+## add specific web port to android studio run config:
+Edit the run config "default" and any others
+```--web-port 58149```
+under "additional run args"
+then make sure to add this to google developer console - have to write up some instructions on this one, but not needed for CORS/storage only needed for firebase auth
