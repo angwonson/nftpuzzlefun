@@ -32,14 +32,15 @@ class PuzzlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
-    // final collectionsSlugList =
-    // firebaseRemoteConfig.getString('collections').split(',');
-    // final collectionList = <String>[];
-    // for (var i = 0; i < collectionsSlugList.length; i++) {
-    //   collectionList.add(collectionsSlugList[i]);
-    // };
-    // final selectedCollectionSlug = collectionList[0];
+    final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
+    final collectionsSlugList =
+        firebaseRemoteConfig.getString('collections').split(',');
+    final collectionList = <String>[];
+    for (var i = 0; i < collectionsSlugList.length; i++) {
+      collectionList.add(collectionsSlugList[i]);
+    }
+    ;
+    final selectedCollectionSlug = collectionList[0];
 
     return MultiBlocProvider(
       providers: [
@@ -76,16 +77,23 @@ class PuzzlePage extends StatelessWidget {
         BlocProvider(
           create: (_) => CollectionsBloc(
             artworkRepository: ArtworkRepository(),
-          )..add(const CollectionsSubscriptionRequested()),
+          )
+            ..add(CollectionsChanged(collectionSlug: selectedCollectionSlug))
+            ..add(const CollectionsSubscriptionRequested()),
         ),
         BlocProvider(
           create: (context) => ArtworkBloc(
             artworkRepository: ArtworkRepository(),
-            artworkPuzzlePiecesRepository: const ArtworkPuzzlePiecesRepository(),
+            artworkPuzzlePiecesRepository:
+                const ArtworkPuzzlePiecesRepository(),
             // selectedCollection:
             //     context.read<CollectionsBloc>().state.selectedCollection,
-          )..add(ArtworkSubscriptionRequested(
-              collectionSlug: context.read<CollectionsBloc>().state.selectedCollection,),),
+          )..add(
+              ArtworkSubscriptionRequested(
+                collectionSlug:
+                selectedCollectionSlug,
+              ),
+            ),
         ),
       ],
       child: const PuzzleView(),
