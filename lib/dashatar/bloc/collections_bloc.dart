@@ -27,8 +27,10 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     CollectionsSubscriptionRequested event,
     Emitter<CollectionsState> emit,
   ) async {
-    debugPrint('SUBSCRIPTION REQUESTED');
+    debugPrint('COLLECTION SUBSCRIPTION REQUESTED');
     emit(state.copyWith(status: () => CollectionsStatus.loading));
+
+    // final requestedCollection = event.collectionSlug;
 
     // a few to try: doodles-official, dartart, themushroompeople,
     // copypasteearth, para-bellum-by-matty-mariansky
@@ -38,7 +40,9 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     final collectionList = <String>[];
     for (var i = 0; i < collectionsSlugList.length; i++) {
       collectionList.add(collectionsSlugList[i]);
-    };
+    }
+    // final firstCollection = collectionList[0];
+
     // const collectionList = [
     //   // 'doodles-official',
     //   'plants-flowers-1',
@@ -54,16 +58,17 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     // ];
 
     try {
+      print('GETING COLLECTIONS SUBSCRIPTION');
       final collections = await _artworkRepository
           .getCollectionsByCollectionList(collectionList);
       debugPrint('COLLECTION RECEIVED $collections');
-      final selectedCollection = collectionList[0];
+      // final selectedCollection = collectionList[0];
 
       emit(
         state.copyWith(
           status: () => CollectionsStatus.success,
           collections: () => collections,
-          selectedCollection: () => selectedCollection,
+          selectedCollection: () => collectionList[0],
         ),
       );
     } on Exception {
@@ -75,6 +80,9 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     CollectionsChanged event,
     Emitter<CollectionsState> emit,
   ) {
-    emit(state.copyWith(selectedCollection: () => event.collectionSlug));
+    print('COLLECTION CHANGED TO: ${event.collectionSlug}');
+    emit(state.copyWith(
+        selectedCollection: () => event.collectionSlug,
+    ),);
   }
 }

@@ -20,10 +20,8 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
   ArtworkBloc({
     required ArtworkRepository artworkRepository,
     required ArtworkPuzzlePiecesRepository artworkPuzzlePiecesRepository,
-    // required String selectedCollection,
   })  : _artworkRepository = artworkRepository,
         _artworkPuzzlePiecesRepository = artworkPuzzlePiecesRepository,
-        // _selectedCollection = selectedCollection,
         super(const ArtworkState()) {
     on<ArtworkSubscriptionRequested>(_onSubscriptionRequested);
 
@@ -34,17 +32,15 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
 
   final ArtworkRepository _artworkRepository;
   final ArtworkPuzzlePiecesRepository _artworkPuzzlePiecesRepository;
-  // final String _selectedCollection;
 
   Future<void> _onSubscriptionRequested(
     ArtworkSubscriptionRequested event,
     Emitter<ArtworkState> emit,
-    // String selectedCollection,
   ) async {
     emit(state.copyWith(status: () => ArtworkStatus.loading));
 
     final collection = event.collectionSlug;
-    debugPrint('SUBSCRIPTION REQUESTED $collection');
+    debugPrint('ARTWORK SUBSCRIPTION REQUESTED $collection');
 
     try {
       final artworks =
@@ -126,10 +122,11 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
     Emitter<ArtworkState> emit,
   ) {
     final mySelectedArtwork = state.artworks[event.artworkIndex];
+    print('ARTWORK INDEX CHANGED TO: ${event.artworkIndex}');
     emit(state.copyWith(
       artwork: () => event.artworkIndex,
       selectedArtwork: () => mySelectedArtwork,
-    ));
+    ),);
   }
 
   // Future<void> fetchArtworksByCollection(String? collection) async {

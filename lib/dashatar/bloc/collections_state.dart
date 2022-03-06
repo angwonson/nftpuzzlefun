@@ -7,7 +7,7 @@ class CollectionsState extends Equatable {
   const CollectionsState({
     this.status = CollectionsStatus.initial,
     this.collections = const [],
-    this.selectedCollection,
+    this.selectedCollection = 'plants-flowers-1',
   });
 
   final CollectionsStatus status;
@@ -16,11 +16,11 @@ class CollectionsState extends Equatable {
   final List<Collection> collections;
 
   /// Currently selected [Collection].
-  final String? selectedCollection;
+  final String selectedCollection;
 
   @override
   // List<Object> get props => [status, collections, selectedCollection];
-  List<Object> get props => [status, collections];
+  List<Object> get props => [status, collections, selectedCollection];
 
   CollectionsState copyWith({
     CollectionsStatus Function()? status,

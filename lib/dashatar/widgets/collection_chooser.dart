@@ -43,8 +43,8 @@ class _CollectionChooserState extends State<CollectionChooser>
   Widget build(BuildContext context) {
     final collections =
         context.select((CollectionsBloc bloc) => bloc.state.collections);
-    final collectionsState = context.watch<CollectionsBloc>().state;
-    final currentCollection = collectionsState.selectedCollection;
+    // final collectionsState = context.watch<CollectionsBloc>().state;
+    // final currentCollection = collectionsState.selectedCollection;
 
     return ResponsiveLayoutBuilder(
       small: (_, child) => child!,
