@@ -43,11 +43,12 @@ class CollectionTile extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           // TODO: if not current collection, set current collection and close the modal
-          // debugPrint('ok' + slug);
+          debugPrint('ok' + slug);
           if (isActiveCollection) {
             return;
           }
 
+          debugPrint('DEBUG SLUG IN TILE AFTER CLICK $slug');
           context
               .read<CollectionsBloc>()
               .add(CollectionsChanged(collectionSlug: slug));
