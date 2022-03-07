@@ -1,10 +1,6 @@
-import 'dart:convert' show utf8;
-import 'dart:io';
-import 'dart:typed_data' show Uint8List;
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:path_provider/path_provider.dart';
 import 'package:squaresplitter/squaresplitter.dart';
 import 'package:tuple/tuple.dart';
 
@@ -72,7 +68,25 @@ class ArtworkPuzzlePiecesRepository {
       );
 
       // put this ogImage into the firebase storage location
+      // TODO: put this into firestore db as well, make sure to include download url though
       await ogRef.putData(mySplitImagesTuple.item4, ogImageMetadata);
+      // get download url
+      final ogDownloadURL = await ogRef.getDownloadURL();
+      print('ogDownloadURL being set: $ogDownloadURL');
+
+      // set up insert record with downloadurl, width and height
+      //insert to firestore
+      FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
+      CollectionReference openseaAssetsCollection = firestoreInstance.collection('opensea_assets');
+      await openseaAssetsCollection
+          .add({
+        'opensea_asset_id': openseaAssetId,
+        'og_download_url': ogDownloadURL,
+        'width': width,
+        'height': height
+      })
+          .then((value) => print('OGIMAGE Added to Firestore'))
+          .catchError((error) => print('Failed to add ogDownloadURL: $error'));
 
       // step2 re-download it to local storage and set the return variable/model object
 
@@ -130,10 +144,27 @@ class ArtworkPuzzlePiecesRepository {
 
 
         // this works! just disabled temporarily to speed up testing
-        // TODO: turn this back on!
+        // TODO: put this into firestore db as well, make sure to include download url though
         await puzzlepieceRef.putData(splitImage, metadata);
 
+        // get download url
+        final puzzlepieceDownloadURL = await puzzlepieceRef.getDownloadURL();
+        print('puzzlepieceDownloadURL being set: $puzzlepieceDownloadURL');
 
+        // final fakePuzzlePieceMOdeled =
+
+        // set up insert record with downloadurl, width and height
+        //insert to firestore
+        // TODO: fix this to create a spefic collection for each puzzle complexity (4x4, 3x2, etc)
+        // await openseaAssetsCollection
+        //     .add({
+        //   'opensea_asset_id': openseaAssetId,
+        //   'puzzle_piece_download_url': puzzlepieceDownloadURL,
+        //   'width': width,
+        //   'height': height
+        // })
+        //     .then((value) => print('OGIMAGE Added to Firestore'))
+        //     .catchError((error) => print('Failed to add ogDownloadURL: $error'));
 
 
         // Get raw data.
