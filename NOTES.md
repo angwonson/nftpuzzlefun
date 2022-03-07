@@ -29,7 +29,7 @@ firebase deploy --only hosting
  cp ../nftpuzzlefun_with_keys_PRIVATE/lib/firebase_options.dart lib/
  cp -R ../nftpuzzlefun_with_keys_PRIVATE/.firebase .firebase
  cp ../nftpuzzlefun_with_keys_PRIVATE/nftpuzzlefun.jks .
- cp ../nftpuzzlefun_with_keys_PRIVATE/android/key.properties.tpl android/
+ cp ../nftpuzzlefun_with_keys_PRIVATE/android/key.properties android/
  cp -i ../nftpuzzlefun_with_keys_PRIVATE/packages/opensea_repository/lib/src/api_key.dart packages/opensea_repository/lib/src/
 ```
 
@@ -84,3 +84,10 @@ Edit the run config "default" and any others
 ```--web-port 58149```
 under "additional run args"
 then make sure to add this to google developer console - have to write up some instructions on this one, but not needed for CORS/storage only needed for firebase auth
+
+## keystore
+```
+/c/Program\ Files/Android/Android\ Studio/jre/bin/keytool.exe -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+```
+#### Copy sha1 and sha256 to firebase android app config
+#### elso copy to google developer console https://console.cloud.google.com/iam-admin/iam?authuser=1&project=nftpuzzlefun
