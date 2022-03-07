@@ -50,6 +50,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // await FirebaseAppCheck.instance.activate(webRecaptchaSiteKey: 'recaptcha-v3-site-key');
 
   final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
   await firebaseRemoteConfig.setConfigSettings(RemoteConfigSettings(
