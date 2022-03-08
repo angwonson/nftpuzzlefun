@@ -12,7 +12,7 @@ import 'package:nftpuzzlefun/bootstrap.dart';
 
 
 void main() {
-  // _setupLogging();
+  _setupLogging();
   bootstrap(() => const App());
 }
 
