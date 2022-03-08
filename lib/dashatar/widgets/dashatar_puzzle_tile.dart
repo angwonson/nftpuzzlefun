@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui' as dartui;
+// import 'dart:ui' as dartui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +13,7 @@ import 'package:nftpuzzlefun/layout/layout.dart';
 import 'package:nftpuzzlefun/models/models.dart';
 import 'package:nftpuzzlefun/puzzle/puzzle.dart';
 import 'package:nftpuzzlefun/theme/themes/themes.dart';
-import 'package:tuple/tuple.dart';
+// import 'package:tuple/tuple.dart';
 
 abstract class _TileSize {
   static double small = 75;
@@ -92,13 +92,13 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
   @override
   Widget build(BuildContext context) {
     final size = widget.state.puzzle.getDimension();
-    final theme = context.select((DashatarThemeBloc bloc) => bloc.state.theme);
-    final artworks = context.select((ArtworkBloc bloc) => bloc.state.artworks);
+    // final theme = context.select((DashatarThemeBloc bloc) => bloc.state.theme);
+    // final artworks = context.select((ArtworkBloc bloc) => bloc.state.artworks);
     final artwork = context.select((ArtworkBloc bloc) => bloc.state.artwork);
     final artworkSplitImages =
-    context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImages);
+        context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImages);
     final artworkSplitImageSizes =
-    context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImageSizes);
+        context.select((ArtworkBloc bloc) => bloc.state.artworkSplitImageSizes);
     final status =
         context.select((DashatarPuzzleBloc bloc) => bloc.state.status);
     final hasStarted = status == DashatarPuzzleStatus.started;
@@ -113,26 +113,33 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
     final canPress = hasStarted && puzzleIncomplete;
 
     // which is smaller, limiting height to _TileSize.large or limiting width?
-    final artworkSplitImageDimensions = artworkSplitImageSizes[artwork][(widget.tile.value - 1)];
+    final artworkSplitImageDimensions =
+        artworkSplitImageSizes[artwork][(widget.tile.value - 1)];
     final artworkSplitImageWidth = artworkSplitImageDimensions.item1;
     final artworkSplitImageHeight = artworkSplitImageDimensions.item2;
 
     var newHeightSmall = _TileSize.small;
     var newHeightMedium = _TileSize.medium;
-    var newHeightLarge =  _TileSize.large;
+    var newHeightLarge = _TileSize.large;
     var newWidthSmall = _TileSize.small;
     var newWidthMedium = _TileSize.medium;
     var newWidthLarge = _TileSize.large;
     if (artworkSplitImageWidth >= artworkSplitImageHeight) {
       // ow / oh * nw = nh
-      newHeightSmall = artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.small;
-      newHeightMedium = artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.medium;
-      newHeightLarge = artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.large;
+      newHeightSmall =
+          artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.small;
+      newHeightMedium =
+          artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.medium;
+      newHeightLarge =
+          artworkSplitImageHeight / artworkSplitImageWidth * _TileSize.large;
       // debugPrint('newHeightLarge $newHeightLarge');
     } else {
-      newWidthSmall = artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.small;
-      newWidthMedium = artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.medium;
-      newWidthLarge = artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.large;
+      newWidthSmall =
+          artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.small;
+      newWidthMedium =
+          artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.medium;
+      newWidthLarge =
+          artworkSplitImageWidth / artworkSplitImageHeight * _TileSize.large;
       // debugPrint('newWidthLarge $newWidthLarge');
     }
 
@@ -179,25 +186,25 @@ class DashatarPuzzleTileState extends State<DashatarPuzzleTile>
               key: Key('dashatar_puzzle_tile_scale_${widget.tile.value}'),
               scale: _scale,
               child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: canPress
-                      ? () {
-                          context
-                              .read<PuzzleBloc>()
-                              .add(TileTapped(widget.tile));
-                          unawaited(_audioPlayer?.replay());
-                        }
-                      : null,
-                  icon: Image.network(artworkSplitImages[artwork][(widget.tile.value - 1)])
-                  // Image.asset(
-                  //   theme.dashAssetForTile(widget.tile),
-                  //   semanticLabel: context.l10n.puzzleTileLabelText(
-                  //     widget.tile.value.toString(),
-                  //     widget.tile.currentPosition.x.toString(),
-                  //     widget.tile.currentPosition.y.toString(),
-                  //   ),
-                  // ),
-                  ),
+                padding: EdgeInsets.zero,
+                onPressed: canPress
+                    ? () {
+                        context.read<PuzzleBloc>().add(TileTapped(widget.tile));
+                        unawaited(_audioPlayer?.replay());
+                      }
+                    : null,
+                icon: Image.network(
+                  artworkSplitImages[artwork][(widget.tile.value - 1)],
+                ),
+                // Image.asset(
+                //   theme.dashAssetForTile(widget.tile),
+                //   semanticLabel: context.l10n.puzzleTileLabelText(
+                //     widget.tile.value.toString(),
+                //     widget.tile.currentPosition.x.toString(),
+                //     widget.tile.currentPosition.y.toString(),
+                //   ),
+                // ),
+              ),
             ),
           ),
         ),

@@ -10,7 +10,7 @@ import 'package:tuple/tuple.dart';
 Future<Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>> splitImage(
     {required String inputImage,
     required int horizontalPieceCount,
-    required int verticalPieceCount}
+    required int verticalPieceCount,}
 ) async {
 
   final rawImg = (await http.get(Uri.parse(inputImage))).bodyBytes;
@@ -41,11 +41,11 @@ Future<Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>> splitImage
         tweakedXLength++;
       }
       debugPrint(
-          'YCOUNT: $y XCOUNT: $x START X: $startX START Y: $startY END X: $tweakedXLength END Y: $tweakedYLength');
+          'YCOUNT: $y XCOUNT: $x START X: $startX START Y: $startY END X: $tweakedXLength END Y: $tweakedYLength',);
       outputImageSizeList.add(Tuple2<int, int>(tweakedXLength, tweakedYLength));
       pieceList.add(
         imglib.copyCrop(
-            baseSizeImage, startX, startY, tweakedXLength, tweakedYLength),
+            baseSizeImage, startX, startY, tweakedXLength, tweakedYLength,),
       );
       startX = startX + tweakedXLength;
     }
@@ -61,6 +61,6 @@ Future<Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>> splitImage
     // .add(Image.memory(Uint8List.fromList(imglib.encodeJpg(img))));
   }
 
-  final myTuple = Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>(outputImageList, outputImageSizeList, Tuple2<int, int>(originalWidth as int, originalHeight));
+  final myTuple = Tuple3<List<Image>, List<Tuple2<int, int>>, Tuple2<int, int>>(outputImageList, outputImageSizeList, Tuple2<int, int>(originalWidth, originalHeight));
   return myTuple;
 }

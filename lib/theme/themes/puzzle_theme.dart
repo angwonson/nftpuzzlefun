@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:nftpuzzlefun/layout/layout.dart';
-import 'package:nftpuzzlefun/theme/theme.dart';
+// import 'package:nftpuzzlefun/theme/theme.dart';
 
 /// {@template puzzle_theme}
 /// Template for creating custom puzzle UI.
@@ -21,6 +21,8 @@ abstract class PuzzleTheme extends Equatable {
 
   /// The text color of the puzzle title.
   Color get titleColor;
+
+  /// The text color of the puzzle creator.
   Color get creatorColor;
 
   /// The background color of this theme.

@@ -27,4 +27,3 @@ class ArtworkChanged extends ArtworkEvent {
   @override
   List<Object> get props => [artworkIndex];
 }
-

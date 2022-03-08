@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs
+// ignore_for_file: public_member_api_docs, flutter_style_todos
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nftpuzzlefun/dashatar/bloc/bloc.dart';
@@ -28,7 +28,7 @@ class CollectionTile extends StatelessWidget {
     final collectionsState = context.watch<CollectionsBloc>().state;
     final artworkState = context.watch<ArtworkBloc>().state;
     final currentCollection = collectionsState.selectedCollection;
-    print('CURRENT COLLECTION $currentCollection');
+    // print('CURRENT COLLECTION $currentCollection');
     final isActiveCollection = slug == currentCollection;
     // debugPrint('current' + currentCollection);
 
@@ -37,13 +37,14 @@ class CollectionTile extends StatelessWidget {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
+        // ignore: avoid_redundant_argument_values
         border: Border.all(color: Colors.grey, width: 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: InkWell(
         onTap: () async {
           // TODO: if not current collection, set current collection and close the modal
-          debugPrint('ok' + slug);
+          debugPrint('ok $slug');
           if (isActiveCollection) {
             return;
           }
@@ -65,7 +66,7 @@ class CollectionTile extends StatelessWidget {
           debugPrint('artworkState ${artworkState.artwork}');
           context.read<ArtworkBloc>().add(ArtworkSubscriptionRequested(
             collectionSlug: slug,
-          ));
+          ),);
           Navigator.of(context).pop();
         },
         child: Column(

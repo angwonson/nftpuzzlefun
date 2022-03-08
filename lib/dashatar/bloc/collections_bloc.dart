@@ -59,7 +59,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     // ];
 
     try {
-      print('GETING COLLECTIONS SUBSCRIPTION');
+      // print('GETING COLLECTIONS SUBSCRIPTION');
       final collections = await _artworkRepository
           .getCollectionsByCollectionList(collectionList);
       debugPrint('COLLECTION RECEIVED $collections');
@@ -81,7 +81,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     CollectionsChanged event,
     Emitter<CollectionsState> emit,
   ) {
-    print('COLLECTION CHANGED TO: ${event.collectionSlug}');
+    // print('COLLECTION CHANGED TO: ${event.collectionSlug}');
     emit(state.copyWith(
         selectedCollection: () => event.collectionSlug,
     ),);

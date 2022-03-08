@@ -1,11 +1,16 @@
+// ignore_for_file: flutter_style_todos
+
 import 'package:artwork_puzzle_pieces_repository/artwork_puzzle_pieces_repository.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:nftpuzzlefun/audio_control/audio_control.dart';
+// import '../../collections/collections_theme.dart';
+import 'package:nftpuzzlefun/dashatar/bloc/collections_bloc.dart';
 import 'package:nftpuzzlefun/dashatar/dashatar.dart';
 import 'package:nftpuzzlefun/dashatar/widgets/collection_chooser.dart';
+import 'package:nftpuzzlefun/helpers/modal_helper.dart';
 import 'package:nftpuzzlefun/l10n/l10n.dart';
 import 'package:nftpuzzlefun/layout/layout.dart';
 import 'package:nftpuzzlefun/models/models.dart';
@@ -15,10 +20,6 @@ import 'package:nftpuzzlefun/theme/theme.dart';
 import 'package:nftpuzzlefun/timer/timer.dart';
 import 'package:nftpuzzlefun/typography/typography.dart';
 import 'package:opensea_repository/opensea_repository.dart';
-
-// import '../../collections/collections_theme.dart';
-import '../../dashatar/bloc/collections_bloc.dart';
-import '../../helpers/modal_helper.dart';
 
 /// {@template puzzle_page}
 /// The root page of the puzzle UI.
@@ -39,7 +40,7 @@ class PuzzlePage extends StatelessWidget {
     for (var i = 0; i < collectionsSlugList.length; i++) {
       collectionList.add(collectionsSlugList[i]);
     }
-    ;
+
     final selectedCollectionSlug = collectionList[0];
 
     return MultiBlocProvider(
@@ -301,7 +302,7 @@ class PuzzleLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
+    // final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
 
     // final artworkState =
     //     context.select((ArtworkBloc bloc) => bloc.state.status);
@@ -454,7 +455,7 @@ class PuzzleMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themes = context.select((ThemeBloc bloc) => bloc.state.themes);
+    // final themes = context.select((ThemeBloc bloc) => bloc.state.themes);
 
     // final artworkState =
     //     context.select((ArtworkBloc bloc) => bloc.state.status);
@@ -501,7 +502,7 @@ class PuzzleMenu extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.icecream_outlined),
-            label: const Text('Choose a Collection')),
+            label: const Text('Choose a Collection'),),
 
         // ...List.generate(
         //   themes.length,
