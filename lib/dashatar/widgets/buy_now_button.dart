@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:just_audio/just_audio.dart';
 // import 'package:nftpuzzlefun/audio_control/audio_control.dart';
@@ -35,13 +38,16 @@ class _BuyNowButtonState extends State<BuyNowButton> {
   @override
   Widget build(BuildContext context) {
     final theme = context.select((DashatarThemeBloc bloc) => bloc.state.theme);
-    final selectedArtwork = context.select((ArtworkBloc bloc) => bloc.state.selectedArtwork);
+    final selectedArtwork =
+        context.select((ArtworkBloc bloc) => bloc.state.selectedArtwork);
 
     final status =
         context.select((DashatarPuzzleBloc bloc) => bloc.state.status);
     final isLoading = status == DashatarPuzzleStatus.loading;
 
-    final text = context.l10n.buyNow;
+    final text = Platform.isIOS || Platform.isMacOS
+        ? context.l10n.buyNowApple
+        : context.l10n.buyNow;
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
@@ -52,14 +58,23 @@ class _BuyNowButtonState extends State<BuyNowButton> {
         child: PuzzleButton(
           onPressed: isLoading
               ? null
-              : () {
-                  debugPrint('clicked');
-                  final affLink = '${selectedArtwork?.permalink}?ref=0x9c6f4531928eb78d0f758702cbd82672f9c3e670';
-                  openLink(affLink);
-                },
+              : Platform.isIOS || Platform.isMacOS
+                  ? () {
+                      debugPrint('clicked on an apple platform (copy to clipboard versus openLink)');
+                      final affLink =
+                          '${selectedArtwork?.permalink}?ref=0x9c6f4531928eb78d0f758702cbd82672f9c3e670';
+                      openLink(affLink);
+                      Clipboard.setData(ClipboardData(text: affLink));
+                    }
+                  : () {
+                      debugPrint('clicked');
+                      final affLink =
+                          '${selectedArtwork?.permalink}?ref=0x9c6f4531928eb78d0f758702cbd82672f9c3e670';
+                      openLink(affLink);
+                    },
           textColor: isLoading ? theme.defaultColor : null,
           child: Text(
-              text,
+            text,
             style: const TextStyle(fontSize: 11),
           ),
         ),

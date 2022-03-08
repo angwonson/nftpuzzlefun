@@ -16,6 +16,10 @@
     "@buyNow": {
         "description": "Shown as the link button for selected artwork"
     },
+    "buyNowApple": "Copy Permalink",
+    "@buyNowApple": {
+        "description": "Shown as the link button for selected artwork"
+    },
     "puzzleChallengeTitle": "Puzzle Challenge",
     "@puzzleChallengeTitle": {
         "description": "Shown as the title of the puzzle"
