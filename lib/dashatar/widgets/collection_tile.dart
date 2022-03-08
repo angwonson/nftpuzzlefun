@@ -32,6 +32,7 @@ class CollectionTile extends StatelessWidget {
     final isActiveCollection = slug == currentCollection;
     // debugPrint('current' + currentCollection);
 
+    debugPrint('bannerImageUrl: $bannerImageUrl imageUrl: $imageUrl');
 
     // TODO: make collection item look nice in list format
     return Container(
