@@ -11,7 +11,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/widgets.dart';
 
@@ -56,7 +56,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await firebaseRemoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(seconds: 10),
     minimumFetchInterval: const Duration(hours: 1),
-  ));
+  ),);
   await firebaseRemoteConfig.setDefaults(<String, dynamic>{
     'collections': 'plants-flowers-1, textures-patterns-1',
   });

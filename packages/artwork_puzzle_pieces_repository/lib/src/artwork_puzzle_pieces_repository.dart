@@ -1,5 +1,6 @@
+// ignore_for_file: flutter_style_todos, avoid_dynamic_calls
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:squaresplitter/squaresplitter.dart';
 import 'package:tuple/tuple.dart';
@@ -23,34 +24,52 @@ class ArtworkPuzzlePiecesRepository {
     required int horizontalPieceCount,
     required int verticalPieceCount,
   }) async {
+    final firestoreInstance = FirebaseFirestore.instance;
+    final CollectionReference openseaAssetsCollection =
+        firestoreInstance.collection('puzzle_pieces');
+
+    // get the meta data from firestore (if it exists)
+    final firebasePuzzlePiecesMetaData =
+        await openseaAssetsCollection.doc(openseaAssetId.toString()).get();
+
+    // exists unless one of the try statements fails below
+    var ogImageExists = true;
+
+    // check if record exists
+    if (!firebasePuzzlePiecesMetaData.exists) {
+      ogImageExists = false;
+    }
+
     // check storage, it image doesn't exist run squaresplitter and insert to storage
     final storage = firebase_storage.FirebaseStorage.instance;
 
     // get ref to FirebaseStorage storage object so we can see if it exists and has the correct metadata
     final ogRef = storage.ref('puzzle_pieces/$openseaAssetId/original.png');
 
+    /*
     // get metadata if file exists
-    var ogImageExists = true;
     try {
       final metadata = await ogRef.getMetadata();
-      print('METADATA FOR OG IMAGE ${metadata.customMetadata!['width']}.');
+      // print('METADATA FOR OG IMAGE ${metadata.customMetadata!['width']}.');
     } on FirebaseException catch (e) {
-      print("Original image doesn't exist in firebase storage yet metadata");
+      // print("Original image doesn't exist in firebase storage yet metadata");
       ogImageExists = false;
     }
 
+
     try {
       final downloadURL = await ogRef.getDownloadURL();
-      print('downloadURL FOR OG IMAGE $downloadURL.');
+      // print('downloadURL FOR OG IMAGE $downloadURL.');
     } on FirebaseException catch (e) {
-      print("Original image doesn't exist in firebase storage yet downloadURL");
+      // print("Original image doesn't exist in firebase storage yet downloadURL");
       ogImageExists = false;
     }
+    */
 
     // if image hasn't been cached yet, cache it in storage, with meta data and return OGImage model object with width and height meta data
     if (!ogImageExists) {
       // step 1 run splitimage as all meta data including for the original uncut image comes from this utility
-      print('BUILDING SPLITIMAGES NEW STYLE');
+      // print('BUILDING SPLITIMAGES NEW STYLE');
       final mySplitImagesTuple = await splitPuzzleImage(
         inputImage: inputImage,
         horizontalPieceCount: horizontalPieceCount,
@@ -71,7 +90,7 @@ class ArtworkPuzzlePiecesRepository {
       await ogRef.putData(mySplitImagesTuple.item4, ogImageMetadata);
       // get download url
       final ogDownloadURL = await ogRef.getDownloadURL();
-      print('ogDownloadURL being set: $ogDownloadURL');
+      // print('ogDownloadURL being set: $ogDownloadURL');
 
       // step2 re-download it to local storage and set the return variable/model object
 
@@ -128,7 +147,7 @@ class ArtworkPuzzlePiecesRepository {
 
         // get download url
         final puzzlepieceDownloadURL = await puzzlepieceRef.getDownloadURL();
-        print('puzzlepieceDownloadURL being set: $puzzlepieceDownloadURL');
+        // print('puzzlepieceDownloadURL being set: $puzzlepieceDownloadURL');
 
         // var identifier = Map();
         // identifier['width'] = mySplitImagesTuple.item2[counter].item1;
@@ -142,7 +161,7 @@ class ArtworkPuzzlePiecesRepository {
 
         // set up insert record with downloadurl, width and height
         //insert to firestore
-        // TODO: fix this to create a spefic collection for each puzzle complexity (4x4, 3x2, etc)
+        // TODO: fix this to create a specific collection for each puzzle complexity (4x4, 3x2, etc)
         // await openseaAssetsCollection
         //     .add({
         //   'opensea_asset_id': openseaAssetId,
@@ -171,9 +190,6 @@ class ArtworkPuzzlePiecesRepository {
 
       // set up insert record with downloadurl, width and height
       //insert to firestore
-      final firestoreInstance = FirebaseFirestore.instance;
-      final CollectionReference openseaAssetsCollection =
-          firestoreInstance.collection('puzzle_pieces');
       await openseaAssetsCollection.doc(openseaAssetId.toString()).set({
         // 'opensea_asset_id': openseaAssetId.toString(),
         'og_download_url': ogDownloadURL,
@@ -190,24 +206,38 @@ class ArtworkPuzzlePiecesRepository {
 
       // } else {
     }
-    // end if og image exists
+    // end if ogImageExists
 
     // image exists, so lets try and load it all from firebase storage
     // Step 1) get original image downloadurl and meta and copy to local storage
     // NOTE: local storage is eluding me. let's move on and just use the url and Image.network()
-    final ogMetadata = await ogRef.getMetadata();
-    final ogDownloadURL = await ogRef.getDownloadURL();
-    print('URRRG DOWNLOAD URL $ogDownloadURL');
+
+    // final firebasePuzzlePiecesMetaData =
+    //     await openseaAssetsCollection.doc(openseaAssetId.toString()).get();
+    // print('DOCUMENT SNAPSHOT: ${firebasePuzzlePiecesMetaData.data()}');
+    // final data = firebasePuzzlePiecesMetaData.data() as Map<String, dynamic>;
+    // print('DOCUMENT SNAPSHOT ID: ${firebasePuzzlePiecesMetaData.id}');
+    // print(
+    //     'DOCUMENT SNAPSHOT OGDOWNLOADURL: ${firebasePuzzlePiecesMetaData.get('og_download_url')}');
+
+    // final ogMetadata = await ogRef.getMetadata();
+    final ogDownloadURL =
+        firebasePuzzlePiecesMetaData.get('og_download_url').toString();
+    final ogWidth =
+        int.parse(firebasePuzzlePiecesMetaData.get('width').toString());
+    final ogHeight =
+        int.parse(firebasePuzzlePiecesMetaData.get('height').toString());
+    // print('URRRG DOWNLOAD URL $ogDownloadURL');
     // final ogDownloadURL = await ogRef.getDownloadURL(); // do we need this since we are going to use local storage as another cache layer?
     // here I present you with some null safety nonsense
-    final ogWidth = ogMetadata.customMetadata == null
-        ? 0
-        : int.parse(ogMetadata.customMetadata!['width'].toString());
-    final ogHeight = ogMetadata.customMetadata == null
-        ? 0
-        : int.parse(ogMetadata.customMetadata!['height'].toString());
+    // final ogWidth = ogMetadata.customMetadata == null
+    //     ? 0
+    //     : int.parse(ogMetadata.customMetadata!['width'].toString());
+    // final ogHeight = ogMetadata.customMetadata == null
+    //     ? 0
+    //     : int.parse(ogMetadata.customMetadata!['height'].toString());
     final artworkOriginalImageSize = Tuple2<int, int>(ogWidth, ogHeight);
-    print('OG IMAGE HEIGHT POST $ogHeight');
+    // print('OG IMAGE HEIGHT POST $ogHeight');
 
     // final appDocDir = await getApplicationDocumentsDirectory();
     // final downloadToFile = File('${appDocDir.path}/puzzle_pieces/$openseaAssetId/original.png');
@@ -224,6 +254,21 @@ class ArtworkPuzzlePiecesRepository {
     final artworkSplitImages = List<String>.empty(growable: true);
     final artworkSplitImageSizes = List<Tuple2<int, int>>.empty(growable: true);
 
+    firebasePuzzlePiecesMetaData['puzzle_pieces'].forEach((dynamic item) {
+      // print('ITEM DLURL: ${item['download_url']}');
+
+      final pieceDownloadURL = item['download_url'] as String;
+      final pieceWidth = item['width'] as int;
+      final pieceHeight = item['height'] as int;
+
+      final artworkPuzzlePieceImageSize =
+          Tuple2<int, int>(pieceWidth, pieceHeight);
+
+      artworkSplitImageSizes.add(artworkPuzzlePieceImageSize);
+      artworkSplitImages.add(pieceDownloadURL);
+    });
+
+    /*
     for (var i = 0; i <= 15; i++) {
       final puzzlepieceRef =
           storage.ref('puzzle_pieces/$openseaAssetId/$i.png');
@@ -243,6 +288,7 @@ class ArtworkPuzzlePiecesRepository {
       artworkSplitImageSizes.add(artworkPuzzlePieceImageSize);
       artworkSplitImages.add(pieceDownloadURL);
     }
+*/
 
     // return false;
     // probably want to return the device local version of the main artwork as well:
@@ -252,8 +298,8 @@ class ArtworkPuzzlePiecesRepository {
             artworkSplitImages,
             artworkSplitImageSizes,
             artworkOriginalImageSize,
-            ogDownloadURL);
-    print('FINISHED BUILDING PUZZLE PIECES DATA FOR ONE IMAGE');
+            ogDownloadURL,);
+    // print('FINISHED BUILDING PUZZLE PIECES DATA FOR ONE IMAGE');
     return myTuple;
   }
 }

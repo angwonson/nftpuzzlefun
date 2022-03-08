@@ -1,4 +1,6 @@
 // import 'dart:ui';
+// ignore_for_file: flutter_style_todos
+
 import 'dart:async';
 
 import 'package:artwork_puzzle_pieces_repository/artwork_puzzle_pieces_repository.dart';
@@ -7,7 +9,7 @@ import 'package:equatable/equatable.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:nftpuzzlefun/dashatar/artworks/my_custom_artwork_one.dart';
-import 'package:nftpuzzlefun/helpers/squaresplitter.dart';
+// import 'package:nftpuzzlefun/helpers/squaresplitter.dart';
 import 'package:opensea_repository/opensea_repository.dart';
 import 'package:tuple/tuple.dart';
 
@@ -122,7 +124,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
     Emitter<ArtworkState> emit,
   ) {
     final mySelectedArtwork = state.artworks[event.artworkIndex];
-    print('ARTWORK INDEX CHANGED TO: ${event.artworkIndex}');
+    // print('ARTWORK INDEX CHANGED TO: ${event.artworkIndex}');
     emit(state.copyWith(
       artwork: () => event.artworkIndex,
       selectedArtwork: () => mySelectedArtwork,

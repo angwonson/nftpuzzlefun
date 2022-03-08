@@ -90,6 +90,7 @@ void main() {
       when(() => dashatarThemeBloc.state).thenReturn(
         DashatarThemeState(
           themes: [GreenDashatarTheme(), theme],
+          // ignore: avoid_redundant_argument_values
           theme: theme,
         ),
       );

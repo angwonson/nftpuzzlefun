@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nftpuzzlefun/dashatar/dashatar.dart';
-import 'package:nftpuzzlefun/l10n/l10n.dart';
+// import 'package:nftpuzzlefun/l10n/l10n.dart';
 import 'package:nftpuzzlefun/layout/layout.dart';
 import 'package:nftpuzzlefun/puzzle/puzzle.dart';
 import 'package:nftpuzzlefun/theme/theme.dart';
-import 'package:nftpuzzlefun/theme/widgets/puzzle_creator_byline.dart';
 
 /// {@template dashatar_start_section}
 /// Displays the start section of the puzzle based on [state].

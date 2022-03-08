@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-/// The animation builder of [CollectionChooser].
+/// The animation builder of CollectionChooser.
 class CollectionChooserAnimatedBuilder extends StatelessWidget {
   const CollectionChooserAnimatedBuilder({
     Key? key,
