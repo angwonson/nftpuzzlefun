@@ -26,6 +26,10 @@ class DashatarScore extends StatelessWidget {
     final state = context.watch<PuzzleBloc>().state;
     final l10n = context.l10n;
 
+    final artwork = context.select((ArtworkBloc bloc) => bloc.state.artwork);
+    final artworkOriginalImageUrls =
+    context.select((ArtworkBloc bloc) => bloc.state.artworkOriginalImageUrls);
+
     return ResponsiveLayoutBuilder(
       small: (_, child) => child!,
       medium: (_, child) => child!,
@@ -77,8 +81,8 @@ class DashatarScore extends StatelessWidget {
                 Positioned(
                   left: imageOffset.dx,
                   top: imageOffset.dy,
-                  child: Image.asset(
-                    theme.successThemeAsset,
+                  child: Image.network(
+                    artworkOriginalImageUrls[artwork],
                     height: imageHeight,
                   ),
                 ),

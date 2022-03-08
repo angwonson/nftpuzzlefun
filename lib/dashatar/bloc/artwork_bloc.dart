@@ -53,6 +53,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
       // First get images and image sizes from firebase/cloud storage
       // if image data doesn't exist in firebase, use the squaresplitter
       // also emit new state -> processing images and set up progressindicator
+      final artworkOriginalImageUrls = List<String>.empty(growable: true);
       final artworkSplitImages = List<List<String>>.empty(growable: true);
       final artworkSplitImageSizes =
           List<List<Tuple2<int, int>>>.empty(growable: true);
@@ -60,6 +61,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
           List<Tuple2<int, int>>.empty(growable: true);
 
       // get split images from firebase storage. if not exists, then generate
+      // existsInStorage actually isn't being used yet
       const existsInStorage = false;
       if (!existsInStorage) {
         // run squaresplitter and shove data into firebase
@@ -78,6 +80,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
           //   horizontalPieceCount: 4,
           //   verticalPieceCount: 4,
           // );
+          artworkOriginalImageUrls.add(puzzlePiecesTuples.item4);
           artworkSplitImages.add(puzzlePiecesTuples.item1);
           artworkSplitImageSizes.add(puzzlePiecesTuples.item2);
           artworkOriginalImageSizes.add(puzzlePiecesTuples.item3);
@@ -94,6 +97,7 @@ class ArtworkBloc extends Bloc<ArtworkEvent, ArtworkState> {
         state.copyWith(
           status: () => ArtworkStatus.success,
           artworks: () => artworks,
+          artworkOriginalImageUrls: () => artworkOriginalImageUrls,
           artworkSplitImages: () => artworkSplitImages,
           artworkSplitImageSizes: () => artworkSplitImageSizes,
           artworkOriginalImageSizes: () => artworkOriginalImageSizes,

@@ -9,7 +9,7 @@ import 'package:nftpuzzlefun/l10n/l10n.dart';
 import 'package:nftpuzzlefun/typography/typography.dart';
 
 /// The url to share for this Flutter Puzzle challenge.
-const _shareUrl = 'https://flutterhack.devpost.com/';
+const _shareUrl = 'https://nftpuzzlefun.com/';
 
 /// {@template dashatar_twitter_button}
 /// Displays a button that shares the Flutter Puzzle challenge

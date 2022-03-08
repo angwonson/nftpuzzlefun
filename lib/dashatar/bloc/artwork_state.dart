@@ -8,6 +8,7 @@ class ArtworkState extends Equatable {
   const ArtworkState({
     this.status = ArtworkStatus.initial,
     this.artworks = const [],
+    this.artworkOriginalImageUrls = const [],
     this.artworkSplitImages = const [],
     this.artworkSplitImageSizes = const [],
     this.artworkOriginalImageSizes = const [],
@@ -19,6 +20,7 @@ class ArtworkState extends Equatable {
 
   /// The list of all available [Artwork]s.
   final List<Artwork> artworks;
+  final List<String> artworkOriginalImageUrls;
   final List<List<String>> artworkSplitImages;
   final List<List<Tuple2<int, int>>> artworkSplitImageSizes;
   final List<Tuple2<int, int>> artworkOriginalImageSizes;
@@ -31,7 +33,8 @@ class ArtworkState extends Equatable {
   List<Object> get props => [
         status,
         artworks,
-        artworkSplitImages,
+    artworkOriginalImageUrls,
+    artworkSplitImages,
         artworkSplitImageSizes,
         artworkOriginalImageSizes,
         artwork
@@ -40,6 +43,7 @@ class ArtworkState extends Equatable {
   ArtworkState copyWith({
     ArtworkStatus Function()? status,
     List<Artwork> Function()? artworks,
+    List<String> Function()? artworkOriginalImageUrls,
     List<List<String>> Function()? artworkSplitImages,
     List<List<Tuple2<int, int>>> Function()? artworkSplitImageSizes,
     List<Tuple2<int, int>> Function()? artworkOriginalImageSizes,
@@ -49,6 +53,9 @@ class ArtworkState extends Equatable {
     return ArtworkState(
       status: status != null ? status() : this.status,
       artworks: artworks != null ? artworks() : this.artworks,
+      artworkOriginalImageUrls: artworkOriginalImageUrls != null
+          ? artworkOriginalImageUrls()
+          : this.artworkOriginalImageUrls,
       artworkSplitImages: artworkSplitImages != null
           ? artworkSplitImages()
           : this.artworkSplitImages,
