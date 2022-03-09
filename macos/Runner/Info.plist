@@ -36,5 +36,7 @@
     <string>public.app-category.puzzle-games</string>
     <key>NSUserTrackingUsageDescription</key>
     <string>This identifier will be used to send anonymous usage data so we can make sure the app is working.</string>
+    <key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+    <false/>
 </dict>
 </plist>

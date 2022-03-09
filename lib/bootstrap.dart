@@ -47,20 +47,30 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  // final statusAppTrackingTransparency = await AppTrackingTransparency.requestTrackingAuthorization();
+  // debugPrint('STATUS ATT: $statusAppTrackingTransparency');
+
   // This uses firebase_options.dart
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // await FirebaseAppCheck.instance.activate(webRecaptchaSiteKey: 'recaptcha-v3-site-key');
 
+
   FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+  // default is false on ios/macos because I set it in plist
+  // <key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+  // <false/>
+  //
+  // _analytics.setAnalyticsCollectionEnabled(false);
 
   // Show tracking authorization dialog and ask for permission
   final statusAppTrackingTransparency = await AppTrackingTransparency.requestTrackingAuthorization();
   debugPrint('STATUS ATT: $statusAppTrackingTransparency');
 
-  if (statusAppTrackingTransparency == TrackingStatus.denied) {
-    await _analytics.setAnalyticsCollectionEnabled(false);
+  if (statusAppTrackingTransparency != TrackingStatus.denied) {
+    await _analytics.setAnalyticsCollectionEnabled(true);
+    // _analytics.setAnalyticsCollectionEnabled(false);
   }
 
 
