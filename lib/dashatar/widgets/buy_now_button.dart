@@ -60,11 +60,17 @@ class _BuyNowButtonState extends State<BuyNowButton> {
               ? null
               : Platform.isIOS || Platform.isMacOS
                   ? () {
-                      debugPrint('clicked on an apple platform (copy to clipboard versus openLink)');
+                      debugPrint(
+                          'clicked on an apple platform (copy to clipboard versus openLink)');
                       final affLink =
                           '${selectedArtwork?.permalink}?ref=0x9c6f4531928eb78d0f758702cbd82672f9c3e670';
-                      openLink(affLink);
-                      Clipboard.setData(ClipboardData(text: affLink));
+                      // openLink(affLink);
+                      // Clipboard.setData(ClipboardData(text: affLink));
+                      // TODO: show some indicator to the user that the text was copied
+                      Clipboard.setData(ClipboardData(text: affLink)).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Permalink copied to clipboard")));
+                      });
                     }
                   : () {
                       debugPrint('clicked');
