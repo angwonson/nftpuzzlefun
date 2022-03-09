@@ -5,9 +5,9 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,7 +34,7 @@ class AppBlocObserver extends BlocObserver {
 }
 
 // # in class:
-FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+// FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 // FirebaseAnalyticsObserver _observer =
 //     FirebaseAnalyticsObserver(analytics: _analytics);
 
@@ -46,11 +46,23 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   };
 
   WidgetsFlutterBinding.ensureInitialized();
+
   // This uses firebase_options.dart
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // await FirebaseAppCheck.instance.activate(webRecaptchaSiteKey: 'recaptcha-v3-site-key');
+
+  FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
+  // Show tracking authorization dialog and ask for permission
+  final statusAppTrackingTransparency = await AppTrackingTransparency.requestTrackingAuthorization();
+  debugPrint('STATUS ATT: $statusAppTrackingTransparency');
+
+  if (statusAppTrackingTransparency == TrackingStatus.denied) {
+    await _analytics.setAnalyticsCollectionEnabled(false);
+  }
+
 
   final firebaseRemoteConfig = FirebaseRemoteConfig.instance;
   await firebaseRemoteConfig.setConfigSettings(RemoteConfigSettings(

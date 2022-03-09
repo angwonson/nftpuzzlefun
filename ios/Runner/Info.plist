@@ -52,5 +52,7 @@
     <string>Need microphone access for accessibility features</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to send anonymous usage data so we can make sure the app is working.</string>
 </dict>
 </plist>
