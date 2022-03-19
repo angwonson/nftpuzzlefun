@@ -49,6 +49,11 @@ class _BuyNowButtonState extends State<BuyNowButton> {
         ? context.l10n.buyNowApple
         : context.l10n.buyNow;
 
+    // hack to try and get apple store approval - remove button for now
+    if (Platform.isIOS || Platform.isMacOS) {
+      return Container();
+    }
+
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: Tooltip(
