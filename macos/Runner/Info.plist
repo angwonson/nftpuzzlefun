@@ -35,7 +35,7 @@
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.puzzle-games</string>
     <key>NSUserTrackingUsageDescription</key>
-    <string>This identifier will be used to send anonymous usage data so we can make sure the app is working.</string>
+    <string>This app requests to send anonymous usage data so we can count the number of people using the app. You allowing us to collect this data helps us improve the app.</string>
     <key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
     <false/>
 </dict>
